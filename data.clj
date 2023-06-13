@@ -32,13 +32,13 @@
     (prn "Found " (count data) " data points")
     (let [task-data
           (concat
-           [["id" "annotations" "image"]]
+           [["annotations" "id" "image"]]
            (for [{:strs [id annotations data] :as data-point} data]
              (let [img-url (str base-url (get data "ocr"))
                    ipfs-img (if copy-images?
                               (copy-file-to-ipfs img-url)
                               img-url)]
-                  [id (json/encode annotations) ipfs-img])))]
+               [(json/encode annotations) id ipfs-img])))]
 
       (with-open [writer (io/writer "task-data.csv")]
         (csv/write-csv writer task-data :quote \')))))
